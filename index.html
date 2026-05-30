@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>Box Inventory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -220,7 +220,7 @@
   .add-panel-body { padding: 24px; }
   .add-instructions { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; background: var(--bg); border-radius: var(--radius-md); padding: 14px 16px; border-left: 3px solid #2563EB; }
   .add-instructions code { font-family: 'Courier New', monospace; font-size: 12px; background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 3px; }
-  #addTextarea { width: 100%; min-height: 220px; font-family: 'Courier New', monospace; font-size: 13px; color: var(--text-primary); background: var(--bg); border: 1px solid var(--border-mid); border-radius: var(--radius-md); padding: 14px 16px; resize: vertical; outline: none; transition: border-color 0.15s; line-height: 1.6; }
+  #addTextarea { width: 100%; min-height: 220px; font-family: 'Courier New', monospace; font-size: 16px; color: var(--text-primary); background: var(--bg); border: 1px solid var(--border-mid); border-radius: var(--radius-md); padding: 14px 16px; resize: vertical; outline: none; transition: border-color 0.15s; line-height: 1.6; }
   #addTextarea:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
   #addTextarea::placeholder { color: var(--text-tertiary); font-style: italic; }
   .add-panel-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
@@ -1197,13 +1197,14 @@ function handleModalKeydown(e) {
 let parsedNewItems = [];
 
 function toggleAddPanel() {
-  const panel=document.getElementById('addPanel');
+  const panel = document.getElementById('addPanel');
   panel.classList.toggle('open');
-  if(panel.classList.contains('open')) {
+  if (panel.classList.contains('open')) {
+    // Scroll the panel into view, then focus the textarea after scroll settles
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setTimeout(() => {
-      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       document.getElementById('addTextarea').focus();
-    }, 50);
+    }, 400);
   }
 }
 function clearAddPanel() {
