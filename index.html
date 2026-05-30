@@ -34,7 +34,7 @@
   h1 em { font-style: italic; color: #2563EB; }
   .header-meta { margin-top: 10px; font-size: 14px; color: var(--text-tertiary); font-weight: 300; }
   .add-btn { display: inline-flex; align-items: center; gap: 7px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 9px 18px; border-radius: var(--radius-md); border: 1px solid var(--border-mid); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; margin-top: 4px; box-shadow: var(--shadow); }
-  .add-btn:hover { background: #8A7A62; color: #fff; border-color: #8A7A62; }
+  .add-btn:hover { background: #1e40af; color: #fff; border-color: #1e40af; }
   .add-btn svg { width: 14px; height: 14px; }
 
   /* ── Search ── */
@@ -145,6 +145,27 @@
   .clear-all-btn.visible { display: inline-flex; }
   .clear-all-btn:hover { background: #DDD5C5; border-color: #A89880; color: #3E3428; }
 
+  /* ── Pagination ── */
+  .pagination {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px; padding: 20px 0 4px;
+  }
+  .pagination-buttons {
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .page-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400;
+    min-width: 34px; height: 34px; padding: 0 12px;
+    border-radius: var(--radius-md); border: 1px solid var(--border-mid);
+    background: var(--surface); color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .page-btn:hover { border-color: #B8AA95; color: var(--text-primary); }
+  .page-btn.active { background: #1e40af; border-color: #1e40af; color: #fff; font-weight: 500; }
+  .page-btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+  .page-btn.nav { font-size: 16px; padding: 0 10px; }
+  .page-count { font-size: 12px; color: var(--text-tertiary); text-align: center; font-weight: 300; }
   .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
   table { width: 100%; border-collapse: collapse; table-layout: fixed; }
   thead { background: var(--bg); }
@@ -209,8 +230,8 @@
   .add-actions { display: flex; gap: 10px; }
   .btn-secondary { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; padding: 9px 18px; border-radius: var(--radius-md); border: 1px solid var(--border-mid); background: var(--surface); color: var(--text-secondary); cursor: pointer; transition: all 0.15s; }
   .btn-secondary:hover { border-color: #B8AA95; color: var(--text-primary); }
-  .btn-primary { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: var(--radius-md); border: 1px solid #8A7A62; background: #8A7A62; color: #fff; cursor: pointer; transition: all 0.15s; }
-  .btn-primary:hover { background: #6E6150; border-color: #6E6150; }
+  .btn-primary { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: var(--radius-md); border: 1px solid #1e40af; background: #1e40af; color: #fff; cursor: pointer; transition: all 0.15s; }
+  .btn-primary:hover { background: #162f8a; border-color: #162f8a; }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
   .preview-wrap { margin-top: 20px; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; display: none; }
   .preview-wrap.open { display: block; }
@@ -251,26 +272,36 @@
   .modal-header h3 {
     font-family: 'DM Serif Display', serif;
     font-size: 28px; font-weight: 400; line-height: 1.1;
-    color: var(--text-primary); letter-spacing: -0.01em;
+    color: #1e40af; letter-spacing: -0.01em;
   }
 
   .modal-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; overflow: visible; }
   .modal-footer {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 10px; padding: 16px 28px 24px;
+    position: relative;
+    height: 68px;
     border-top: 1px solid var(--border);
   }
-  .modal-footer-right { display: flex; align-items: center; gap: 10px; }
+  .footer-row {
+    position: absolute; inset: 0; padding: 0 28px;
+    display: grid; grid-template-columns: 1fr auto auto;
+    align-items: center; gap: 10px;
+    transition: opacity 0.18s ease;
+  }
+  .footer-row.hidden { opacity: 0; pointer-events: none; }
   .btn-danger {
     font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-    padding: 9px 16px; border-radius: var(--radius-md);
+    padding: 9px 12px; border-radius: var(--radius-md);
     border: 1px solid #E5C0C0; background: #FDF0F0;
     color: #B01C1C; cursor: pointer;
-    transition: all 0.15s;
-    display: inline-flex; align-items: center; gap: 7px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    display: inline-flex; align-items: center; gap: 6px;
   }
   .btn-danger:hover { background: #B01C1C; border-color: #B01C1C; color: #fff; }
   .btn-danger svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .confirm-text {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    color: #B01C1C;
+  }
 
   /* Form fields */
   .field { display: flex; flex-direction: column; gap: 7px; }
@@ -432,7 +463,7 @@
     </button>
 
     <div class="filter-spacer"></div>
-    <button class="clear-all-btn" id="clearAllBtn" onclick="clearAllFilters()">Clear all</button>
+    <button class="clear-all-btn" id="clearAllBtn" onclick="clearAllFilters()">Clear</button>
   </div>
 
   <!-- Expandable filter panel (shared, content swaps) -->
@@ -457,6 +488,7 @@
         <tbody id="tbody"></tbody>
       </table>
     </div>
+    <div class="pagination" id="pagination"></div>
   </div>
 </div>
 
@@ -506,19 +538,20 @@
       </div>
     </div>
     <div class="modal-footer" id="modalFooter">
-      <button class="btn-danger" onclick="deleteItem()">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="1,3 13,3"/>
-          <path d="M5,3V2h4v1"/>
-          <rect x="2" y="3" width="10" height="9" rx="1"/>
-          <line x1="5" y1="6" x2="5" y2="10"/>
-          <line x1="9" y1="6" x2="9" y2="10"/>
-        </svg>
-        Delete
-      </button>
-      <div class="modal-footer-right">
+      <!-- Default row -->
+      <div class="footer-row" id="footerDefault">
+        <button class="btn-danger" onclick="deleteItem()">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,3 13,3"/><path d="M5,3V2h4v1"/><rect x="2" y="3" width="10" height="9" rx="1"/><line x1="5" y1="6" x2="5" y2="10"/><line x1="9" y1="6" x2="9" y2="10"/></svg>
+          Delete
+        </button>
         <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
-        <button class="btn-primary" onclick="saveEdit()">Save changes</button>
+        <button class="btn-primary" onclick="saveEdit()">Save</button>
+      </div>
+      <!-- Confirm row -->
+      <div class="footer-row hidden" id="footerConfirm">
+        <span class="confirm-text">Are you sure?</span>
+        <button class="btn-secondary" onclick="cancelDelete()">Cancel</button>
+        <button class="btn-danger" id="confirmDeleteBtn" style="background:#B01C1C;border-color:#B01C1C;color:#fff;">Delete</button>
       </div>
     </div>
   </div>
@@ -749,7 +782,8 @@ let ITEMS = RAW.map(([box,category,person,name],i) => ({
 }));
 let nextItemId = RAW.length; // always increments, never reused
 
-let currentQuery='', sortCol='name', sortDir=1;
+let currentQuery='', sortCol='name', sortDir=1, currentPage=1;
+const PAGE_SIZE = 25;
 
 // ─────────────────────────────────────────────
 //  SEARCH
@@ -803,11 +837,17 @@ function render() {
       if(av<bv) return -1*sortDir; if(av>bv) return 1*sortDir; return 0;
     });
   }
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  if(currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
   const tbody=document.getElementById('tbody');
   if(!filtered.length) {
     tbody.innerHTML=`<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">◻</div><strong>No items found</strong><p>Try a different search term or clear the filter</p></div></td></tr>`;
   } else {
-    tbody.innerHTML=filtered.map(item=>`
+    tbody.innerHTML=pageItems.map(item=>`
       <tr data-id="${item.id}" onclick="openEditModal(${item.id})">
         <td class="item-name">${highlight(item.name,tokens)}<span class="edit-hint">edit</span></td>
         <td><span class="box-badge" ${boxBadgeStyle(item.box)}><span class="box-full">${esc(item.box)}</span><span class="box-short">${esc(item.box.replace(/^BOX-/i,''))}</span></span></td>
@@ -815,7 +855,42 @@ function render() {
         <td><span class="person-badge ${personClass(item.person)}">${personLabel(item.person)}</span></td>
       </tr>`).join('');
   }
+
+  renderPagination(totalPages, filtered.length);
   document.getElementById('stats') && (document.getElementById('stats').textContent = filtered.length+' of '+ITEMS.length+' items');
+}
+
+function renderPagination(totalPages, totalItems) {
+  const pg = document.getElementById('pagination');
+  if(totalPages <= 1) { pg.innerHTML = ''; return; }
+
+  // Show at most 3 page number buttons centred on current page
+  const half = 1; // one either side of current
+  let start = Math.max(1, currentPage - half);
+  let end   = Math.min(totalPages, start + 2);
+  if(end - start < 2) start = Math.max(1, end - 2);
+
+  const prevDisabled = currentPage === 1 ? 'disabled' : '';
+  const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+
+  let btns = `<button class="page-btn nav" ${prevDisabled} onclick="goToPage(${currentPage-1})">‹</button>`;
+  for(let i = start; i <= end; i++) {
+    btns += `<button class="page-btn${i===currentPage?' active':''}" onclick="goToPage(${i})">${i}</button>`;
+  }
+  btns += `<button class="page-btn nav" ${nextDisabled} onclick="goToPage(${currentPage+1})">›</button>`;
+
+  const from = (currentPage - 1) * PAGE_SIZE + 1;
+  const to   = Math.min(currentPage * PAGE_SIZE, totalItems);
+
+  pg.innerHTML = `
+    <div class="pagination-buttons">${btns}</div>
+    <span class="page-count">${from}–${to} of ${totalItems} items</span>`;
+}
+
+function goToPage(page) {
+  currentPage = page;
+  render();
+  document.getElementById('itemTable').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function updateHeaderMeta() {
   const total=ITEMS.length, boxes=new Set(ITEMS.map(x=>x.box)).size;
@@ -900,15 +975,16 @@ function renderFilterPanel(type) {
 }
 
 function setFilter(type, value) {
-  // Toggle: clicking same value deselects
   activeFilters[type] = activeFilters[type] === value ? null : value;
+  currentPage = 1;
   updateTriggerLabels();
-  renderFilterPanel(type); // re-render to show updated selected state
+  renderFilterPanel(type);
   render();
 }
 
 function clearFilter(type) {
   activeFilters[type] = null;
+  currentPage = 1;
   updateTriggerLabels();
   renderFilterPanel(type);
   render();
@@ -939,7 +1015,7 @@ function updateTriggerLabels() {
 
 function clearAllFilters() {
   activeFilters = { box: null, cat: null, person: null };
-  // Close any open panel
+  currentPage = 1;
   openPanel = null;
   document.getElementById('filterPanelWrap').classList.remove('open');
   updateTriggerLabels();
@@ -987,7 +1063,7 @@ function openEditModal(id) {
 function closeEditModal() {
   document.getElementById('editOverlay').classList.remove('open');
   document.getElementById('catSuggestions').classList.remove('open');
-  cancelDelete(); // always reset footer to default state
+  cancelDelete(); // always reset to default footer state
   editingId = null;
 }
 
@@ -1024,36 +1100,27 @@ function saveEdit() {
 function deleteItem() {
   const id = editingId;
   if (id === null) return;
-  const item = ITEMS.find(x => x.id === id);
-  if (!item) return;
-  // Show inline confirmation instead of confirm() which is blocked in sandboxed iframes
-  const footer = document.getElementById('modalFooter');
-  footer.innerHTML = `
-    <span style="font-size:13px;color:#B01C1C;font-family:'DM Sans',sans-serif;">Delete <strong>${esc(item.name)}</strong>?</span>
-    <div class="modal-footer-right">
-      <button class="btn-secondary" onclick="cancelDelete()">Cancel</button>
-      <button class="btn-danger" onclick="confirmDelete(${id})" style="background:#B01C1C;border-color:#B01C1C;color:#fff;">Delete</button>
-    </div>`;
+  document.getElementById('confirmDeleteBtn').onclick = () => confirmDelete(id);
+  document.getElementById('footerDefault').classList.add('hidden');
+  document.getElementById('footerConfirm').classList.remove('hidden');
 }
 
 function cancelDelete() {
-  const footer = document.getElementById('modalFooter');
-  if (!footer) return;
-  footer.innerHTML = `
-    <button class="btn-danger" onclick="deleteItem()">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="1,3 13,3"/>
-        <path d="M5,3V2h4v1"/>
-        <rect x="2" y="3" width="10" height="9" rx="1"/>
-        <line x1="5" y1="6" x2="5" y2="10"/>
-        <line x1="9" y1="6" x2="9" y2="10"/>
-      </svg>
-      Delete
-    </button>
-    <div class="modal-footer-right">
-      <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveEdit()">Save</button>
-    </div>`;
+  const def = document.getElementById('footerDefault');
+  if (!def) return;
+  def.classList.remove('hidden');
+  document.getElementById('footerConfirm').classList.add('hidden');
+}
+
+function confirmDelete(id) {
+  ITEMS = ITEMS.filter(x => x.id !== id);
+  editingId = null;
+  document.getElementById('editOverlay').classList.remove('open');
+  document.getElementById('catSuggestions').classList.remove('open');
+  cancelDelete();
+  buildFilters();
+  updateHeaderMeta();
+  render();
 }
 
 function confirmDelete(id) {
@@ -1194,7 +1261,6 @@ function confirmAddItems() {
 //  INIT
 // ─────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  cancelDelete(); // populate modal footer with default buttons
   buildFilters();
   updateHeaderMeta();
   render();
@@ -1203,15 +1269,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const input=document.getElementById('searchInput');
   const clearBtn=document.getElementById('clearBtn');
-  input.addEventListener('input', e=>{ currentQuery=e.target.value; clearBtn.classList.toggle('visible',!!currentQuery); render(); });
+  input.addEventListener('input', e=>{ currentQuery=e.target.value; currentPage=1; clearBtn.classList.toggle('visible',!!currentQuery); render(); });
   input.addEventListener('keydown', e=>{ if(e.key==='Escape') input.blur(); });
-  clearBtn.addEventListener('click', ()=>{ input.value=''; currentQuery=''; clearBtn.classList.remove('visible'); render(); input.focus(); });
+  clearBtn.addEventListener('click', ()=>{ input.value=''; currentQuery=''; currentPage=1; clearBtn.classList.remove('visible'); render(); input.focus(); });
 
   // Sort headers
   document.querySelectorAll('th[data-col]').forEach(th=>{
     th.addEventListener('click', ()=>{
       const col=th.dataset.col;
       if(sortCol===col) sortDir*=-1; else { sortCol=col; sortDir=1; }
+      currentPage=1;
       document.querySelectorAll('th[data-col]').forEach(t=>{ t.classList.remove('sorted'); t.querySelector('.sort-icon').textContent=''; });
       th.classList.add('sorted');
       th.querySelector('.sort-icon').textContent=sortDir===1?'↑':'↓';
